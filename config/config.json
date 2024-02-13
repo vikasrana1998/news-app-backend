@@ -1,0 +1,29 @@
+{
+  "development": {
+    "dialect": "postgres",
+    "host": "${DB_HOST}",
+    "port": "${DB_PORT}",
+    "username": "${DB_USER}",
+    "password": "${DB_PASSWORD}",
+    "database": "${DB_NAME}",
+    "logging": false
+  },
+  "production": {
+    "dialect": "postgres",
+    "host": "${DB_HOST}",
+    "port": "${DB_PORT}",
+    "username": "${DB_USER}",
+    "password": "${DB_PASSWORD}",
+    "database": "${DB_NAME}",
+    "logging": false
+  },
+  "test": {
+    "dialect": "postgres",
+    "host": "${DB_HOST}",
+    "port": "${DB_PORT}",
+    "username": "${DB_USER}",
+    "password": "${DB_PASSWORD}",
+    "database": "${DB_NAME}_test",
+    "logging": false
+  }
+}
