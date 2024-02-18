@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         });
 
         this.response = JSON.stringify(chatCompletion);
+        this.model = chatCompletion.model;
         this.promptTokens = chatCompletion.usage.prompt_tokens;
         this.responseTokens = chatCompletion.usage.completion_tokens;
 
