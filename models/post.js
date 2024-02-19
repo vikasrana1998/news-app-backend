@@ -9,6 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Post.belongsToMany(models.Category, {
+        through: 'PostCategory', // Name of the junction table
+        foreignKey: 'postId',
+        otherKey: 'categoryId',
+      });
+
+      Post.belongsToMany(models.Tag, {
+        through: 'PostTag', // Name of the junction table
+        foreignKey: 'postId',
+        otherKey: 'tagId',
+      });
     }
   }
   Post.init({
@@ -20,8 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     url: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Post',
-    tableName: 'posts',
+    modelName: 'Post'
   });
   return Post;
 };

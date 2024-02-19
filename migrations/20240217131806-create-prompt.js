@@ -1,5 +1,7 @@
 'use strict';
 
+const { DataTypes } = require('sequelize');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -9,31 +11,30 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('Prompts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        allowNull: false,
+      prompt: {
+        type: Sequelize.ARRAY(DataTypes.JSON)
+      },
+      response: {
+        type: Sequelize.TEXT
+      },
+      model: {
         type: Sequelize.STRING
       },
-      email: {
-        allowNull: false,
-        unique: true,
+      configuration: {
         type: Sequelize.STRING
       },
-      email_verified_at: {
-        type: Sequelize.DATE
+      promptTokens: {
+        type: Sequelize.SMALLINT
       },
-      password: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      remember_token: {
-        type: Sequelize.STRING
+      responseTokens: {
+        type: Sequelize.SMALLINT
       },
       createdAt: {
         allowNull: false,
@@ -53,6 +54,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('Prompts');
   }
 };

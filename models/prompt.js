@@ -44,8 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     responseTokens: DataTypes.SMALLINT
   }, {
     sequelize,
-    modelName: 'Prompt',
-    tableName: 'prompts'
+    modelName: 'Prompt'
   });
   return Prompt;
 };

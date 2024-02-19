@@ -1,5 +1,6 @@
 const { z } = require('zod');
-const { Post, Prompt } = require('../models');
+const slugify = require('slugify');
+const { Post, Prompt, Category, Tag } = require('../models');
 
 exports.preparePost = async (req, res) => {
     try {
@@ -27,6 +28,30 @@ exports.preparePost = async (req, res) => {
         // OpenAI call
         const response = JSON.parse(await newPrompt.callOpenAI());
 
+        //Category of content provided
+        const categoryNames = response.category;
+        const categoryIds = [];
+        for (const categoryName of categoryNames) {
+            const slugToMatch = slugify(categoryName, { lower: true, strict: true });
+            const category = await Category.findOne({ where: { slug: slugToMatch } }); //From db match the category and get ids
+            if (category) {
+                categoryIds.push(category.id);
+            }
+        }
+
+        //Tag of content provided
+        const tagNames = response.tags;
+        const tagsToBeAttached = [];
+        for (const tagName of tagNames) {
+            const slugToMatch = slugify(tagName, { lower: true, strict: true });
+            const [tag, created] = await Tag.findOrCreate({ // Find or create the tag
+                where: { slug: slugToMatch },
+                defaults: { name: tagName }
+            });
+            tagsToBeAttached.push(tag.id);
+        }
+
+
         //Create a new Post
         const newPost = await Post.create({
             title: response.title,
@@ -36,6 +61,9 @@ exports.preparePost = async (req, res) => {
             image: image || null,
             url: url || null
         });
+
+        await newPost.addCategories(categoryIds);
+        await newPost.addTags(tagsToBeAttached);
 
         return res.status(201).json({ message: 'Post Created', data: response });
     }
