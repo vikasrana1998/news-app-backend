@@ -39,6 +39,18 @@ exports.preparePost = async (req, res) => {
             }
         }
 
+        //OPTIMISED VERSION GET REPONSE IN SINGLE QUERY
+        // // Find all categories matching the provided slugs in a single query
+        // const categories = await Category.findAll({
+        //     where: {
+        //         name: {
+        //             [Op.in]: categoryNames // Find categories where slug is in categoryNames array
+        //         }
+        //     }
+        // });
+        // const categoryIds = categories.map(category => category.id);
+
+
         //Tag of content provided
         const tagNames = response.tags;
         const tagsToBeAttached = [];
