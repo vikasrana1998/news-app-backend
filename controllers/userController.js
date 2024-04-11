@@ -44,7 +44,7 @@ exports.login = async (req, res) => {
         const user = await User.findOne({ where: { email: email } });
 
         //Password matching
-        if (!bcrypt.compareSync(password, user.password)) {
+        if (!user || !bcrypt.compareSync(password, user.password)) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
@@ -55,6 +55,7 @@ exports.login = async (req, res) => {
         res.json({ message: 'Login successful', token });
 
     } catch (error) {
+        console.log(error);
         res.status(400).json({ message: error.message });
     }
 };
